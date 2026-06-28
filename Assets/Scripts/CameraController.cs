@@ -1,16 +1,31 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    [SerializeField] private Transform player;
+    [SerializeField] private Vector3 offset = new Vector3(0f, 4f, -6f);
+    [SerializeField] private float rotationSpeed = 100f;
+
+    private float mouseInput;
+    
     void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+       void Update()
     {
-        
+        if (player == null)
+        {
+            return;
+        }
+
+        mouseInput = Input.GetAxis("Mouse X");
+
+        player.Rotate(Vector3.up * mouseInput * rotationSpeed * Time.deltaTime);
+        transform.position = player.position + player.TransformDirection(offset);
+        transform.LookAt(player.position);
     }
 }
